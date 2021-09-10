@@ -6,29 +6,14 @@ const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 const SpotifyStrategy = require('passport-spotify').Strategy;
-// // const { path } = require('dotenv/lib/env-options');
+// const cookie = require('cookie');
 // const spotify = require('spotify');
 
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
-const authCallbackPath = '/auth/spotify/callback';
 const app = express();
 
-
-
-// var SpotifyWebApi = require('spotify-web-api-node');
-
-// credentials are optional
-// var spotifyApi = new SpotifyWebApi({
-//   clientId: CLIENT_ID,
-//   clientSecret: CLIENT_SECRET,
-//   redirectUri: 'http://localhost:' + port + authCallbackPath
-// });
-// var Spotify = require('node-spotify-api');
-
-
 const userAccess = {};
-
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -55,7 +40,7 @@ passport.use(
     {
       clientID: CLIENT_ID,
       clientSecret: CLIENT_SECRET,
-      callbackURL: 'http://localhost:' + process.env.PORT + authCallbackPath,
+      callbackURL: process.env.SPOTIFY_AUTH_CALLBACK
     },
     function (accessToken, refreshToken, expiresIn, profile, done) {
       // asynchronous verification, for effect...
@@ -73,7 +58,6 @@ passport.use(
   )
 );
 
-
 app.use(
   session({ secret: 'keyboard cat', resave: true, saveUninitialized: true })
 );
@@ -81,16 +65,6 @@ app.use(
 // persistent login sessions (recommended).
 app.use(passport.initialize());
 app.use(passport.session());
-
-
-// app.get('/', function (req, res) {
-//   console.log('in the get root function')
-//   res.render('index.html', { user: req.user });
-//   if (req.user) {
-//     console.log("user is", req.user)
-//   }
-// });
-
 
 // GET /auth/spotify
 //   Use passport.authenticate() as route middleware to authenticate the
@@ -100,7 +74,8 @@ app.use(passport.session());
 app.get(
   '/auth/spotify', passport.authenticate('spotify', {
     scope: ['user-read-email', 'user-read-private'],
-    showDialog: true,})
+    showDialog: true
+  })
 );
 
 // GET /auth/spotify/callback
@@ -109,19 +84,24 @@ app.get(
 //   login page. Otherwise, the primary route function function will be called,
 //   which, in this example, will redirect the user to the home page.
 app.get(
-  authCallbackPath,
-  passport.authenticate('spotify', { failureRedirect: '/login' }),
+  '/auth/spotify/callback',
+  passport.authenticate('spotify', { failureRedirect: `http://localhost:${process.env.DEV_SERVER_PORT}` }),
   function (req, res) {
+    res.cookie('userName', req.user, { path: '/' });
     res.redirect('/');
   }
 );
 
-app.get('/logout', function (req, res) {
-  req.logout();
-  res.redirect('/');
+app.get('/auth/logout', function (req, res) {
+  // console.log('user is logged out')
+  // res.clearCookie('userName');
+  // req.session.destroy();
+  // req.logout();
+  // res.redirect('/');
 });
 
 app.listen(process.env.PORT, function () {
+  // eslint-disable-next-line
   console.log('App is listening on port ' + process.env.PORT);
 });
 
@@ -131,7 +111,7 @@ app.listen(process.env.PORT, function () {
 //   the request will proceed. Otherwise, the user will be redirected to the
 //   login page.
 
-//UNCOMMENT LATRER ON
+// UNCOMMENT LATRER ON
 
 // function ensureAuthenticated(req, res, next) {
 //   if (req.isAuthenticated()) {

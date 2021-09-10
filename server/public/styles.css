@@ -1,8 +1,9 @@
 h1,
-h2 {
+h2,
+h4,
+h5 {
   color: white;
   padding: 1rem;
-  text-align: center;
 }
 
 header {
@@ -24,6 +25,14 @@ header {
 
 .padding-1 {
   padding: 1rem;
+}
+
+.padding-2 {
+  padding: 2rem;
+}
+
+.text-center {
+  text-align: center;
 }
 
 .green-button:hover {
