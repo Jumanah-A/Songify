@@ -6,8 +6,6 @@ const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 const SpotifyStrategy = require('passport-spotify').Strategy;
-// const cookie = require('cookie');
-// const spotify = require('spotify');
 
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
@@ -92,13 +90,13 @@ app.get(
   }
 );
 
-app.get('/auth/logout', function (req, res) {
-  // console.log('user is logged out')
-  // res.clearCookie('userName');
-  // req.session.destroy();
-  // req.logout();
-  // res.redirect('/');
-});
+// app.get('/auth/logout', function (req, res) {
+// console.log('user is logged out')
+// res.clearCookie('userName');
+// req.session.destroy();
+// req.logout();
+// res.redirect('/');
+// });
 
 app.listen(process.env.PORT, function () {
   // eslint-disable-next-line
@@ -111,7 +109,7 @@ app.listen(process.env.PORT, function () {
 //   the request will proceed. Otherwise, the user will be redirected to the
 //   login page.
 
-// UNCOMMENT LATRER ON
+// UNCOMMENT LATER ON
 
 // function ensureAuthenticated(req, res, next) {
 //   if (req.isAuthenticated()) {
