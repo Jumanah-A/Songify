@@ -1,12 +1,12 @@
 require('dotenv/config');
-const errorMiddleware = require('./error-middleware');
-const staticMiddleware = require('./static-middleware');
+// const errorMiddleware = require('./error-middleware');
+// const staticMiddleware = require('./static-middleware');
 
 const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 const SpotifyStrategy = require('passport-spotify').Strategy;
-// const { path } = require('dotenv/lib/env-options');
+// // const { path } = require('dotenv/lib/env-options');
 // const spotify = require('spotify');
 
 const CLIENT_ID = process.env.CLIENT_ID;
@@ -15,169 +15,126 @@ const authCallbackPath = '/auth/spotify/callback';
 const app = express();
 
 
+
+// var SpotifyWebApi = require('spotify-web-api-node');
+
+// credentials are optional
+// var spotifyApi = new SpotifyWebApi({
+//   clientId: CLIENT_ID,
+//   clientSecret: CLIENT_SECRET,
+//   redirectUri: 'http://localhost:' + port + authCallbackPath
+// });
+// var Spotify = require('node-spotify-api');
+
+
 const userAccess = {};
 
 
-//Support persistant login sessions => serialize and deserialize users out of session
-// by storing storing userId when serialize and finding userId when deserializing
+// Passport session setup.
+//   To support persistent login sessions, Passport needs to be able to
+//   serialize users into and deserialize users out of the session. Typically,
+//   this will be as simple as storing the user ID when serializing, and finding
+//   the user by ID when deserializing. However, since this example does not
+//   have a database of user records, the complete spotify profile is serialized
+//   and deserialized.
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
 
+passport.deserializeUser(function (obj, done) {
+  done(null, obj);
+});
 
-passport.serializeUser( (user, done) => done(null, user));
-passport.deserializeUser((obj, done) => done(null, obj))
-// Setting the SpotifyStrategy within Passport
-// after the user signs in and authorizes the app
-// used to retrieve and setup accesstoken
+// Use the SpotifyStrategy within Passport.
+//   Strategies in Passport require a `verify` function, which accept
+//   credentials (in this case, an accessToken, refreshToken, expires_in
+//   and spotify profile), and invoke a callback with a user object.
+// THIS METHOD IS RUN AFTER THE USER SIGNS IN AND AUTHORIZES THE APP
 passport.use(
   new SpotifyStrategy(
     {
       clientID: CLIENT_ID,
       clientSecret: CLIENT_SECRET,
-      callbackURL: 'http://localhost:' + process.env.PORT + authCallbackPath
+      callbackURL: 'http://localhost:' + process.env.PORT + authCallbackPath,
     },
-    function(accessToken, refreshToken, expiresIn, profile, done)
-    {
-      // the user's spotify profile is returned to
-      // represent the logged-in user.
-      process.nextTick(
-        function () {
-          return done(null, profile);
-        }
-      );
+    function (accessToken, refreshToken, expiresIn, profile, done) {
+      // asynchronous verification, for effect...
+      // console.log(refreshToken, accessToken);
+      process.nextTick(function () {
+        // To keep the example simple, the user's spotify profile is returned to
+        // represent the logged-in user. In a typical application, you would want
+        // to associate the spotify account with a user record in your database,
+        // and return that user instead.
+        return done(null, profile);
+      });
+      // spotifyApi.setAccessToken(accessToken);
       userAccess.accessToken = accessToken;
-
     }
   )
 );
 
-// setup session middleware to keep track
-app.use(
-  session({ secret: 'keyboard cat', resave:true,saveUninitialized:true})
-);
-app.use(express.static(__dirname));
 
-//passport middleware initialization
+app.use(
+  session({ secret: 'keyboard cat', resave: true, saveUninitialized: true })
+);
+// Initialize Passport!  Also use passport.session() middleware, to support
+// persistent login sessions (recommended).
 app.use(passport.initialize());
-//acts as a middleware to alter the req object and change the 'user' value that is currently
-//the session id (from the client cookie) into the true deserialized user object.
 app.use(passport.session());
 
-// app.get('/', (req, res) => {
-//   console.log('in the root page function');
-//   console.log('hiiii');
-//   res.send("hello welcome to teh root page")
-//   req.logout();
-// })
 
-// app.get('/homepage', (req,res) => {
-//   console.log('in the homepage page function');
-//   res.render('homepage.html', {user:req.user});
-//   console.log('user is', req.user);
-// })
-// app.get('/welcome', (req, res) => {
-//   console.log('in the welcome page function');
-
-//   // res.sendFile(__dirname + "/welcome.html");
-//   // res.render({ user: req.user });
-//   console.log('user is', req.user);
-// })
-
-// app.get(
-//   '/auth/spotify',
-//   passport.authenticate('spotify', {
-//     scope: ['user-read-email', 'user-read-private'],
-//     showDialogue: true
-//   })
-//   );
-
-// app.get(
-//   authCallbackPath,
-//   passport.authenticate('spotify', {failureRedirect: '/homepage'}),
-//   (req,res) => { res.redirect('/welcome')}
-//   );
-
-
-// //make sure that the suer is
-// //logged in to spotify to be able to access data
-
-// function ensureAuthenticated(req,res,next)
-// {
-//   if(req.isAuthenticated())
-//   {
-//     return next();
+// app.get('/', function (req, res) {
+//   console.log('in the get root function')
+//   res.render('index.html', { user: req.user });
+//   if (req.user) {
+//     console.log("user is", req.user)
 //   }
-//   res.redirect('/homepage');
-// }
+// });
 
 
+// GET /auth/spotify
+//   Use passport.authenticate() as route middleware to authenticate the
+//   request. The first step in spotify authentication will involve redirecting
+//   the user to spotify.com. After authorization, spotify will redirect the user
+//   back to this application at /auth/spotify/callback
+app.get(
+  '/auth/spotify', passport.authenticate('spotify', {
+    scope: ['user-read-email', 'user-read-private'],
+    showDialog: true,})
+);
 
+// GET /auth/spotify/callback
+//   Use passport.authenticate() as route middleware to authenticate the
+//   request. If authentication fails, the user will be redirected back to the
+//   login page. Otherwise, the primary route function function will be called,
+//   which, in this example, will redirect the user to the home page.
+app.get(
+  authCallbackPath,
+  passport.authenticate('spotify', { failureRedirect: '/login' }),
+  function (req, res) {
+    res.redirect('/');
+  }
+);
 
-
-
-
-
-
-
-
-
-
-
-
-
-// serve your css as static
-// const patyhName = __dirname + '/public';
-// pa
-// app.use(express.static(patyhName));
-
-// app.get('/homepage', (req,res) =>
-// {
-//   console.log('in the homepage');
-//   res.sendFile(__dirname + "/homepage.html");
-// })
-
-app.get('/',(res,req) => {
-  console.log('in the root method');
-  //rednerign situation
-  res.render('index.html', { user: req.user });
-  console.log(req.user);
-})
-
-app.get('/login', function (req, res) {
-  console.log('in the get login function user is', req.user)
-  res.redirect('/auth/spotify');
-  // res.render('login.html', { user: req.user });
-
-});
-
-app.get('/auth/spotify',passport.authenticate('spotify',
-{
-  scope:['user-read-email','user-read-private'],
-  showDialogue:true
-}));
-
-
-app.get(authCallbackPath,
-  passport.authenticate('spotify',{failureRedirect:'/login'}), (req,res) => res.redirect('/'))
-
-app.get('/logout', (res,req) =>
-{
+app.get('/logout', function (req, res) {
   req.logout();
-  res.redirect('/')
-})
-
-
-app.use(staticMiddleware);
-
-app.use(errorMiddleware);
-
-app.listen(process.env.PORT, () => {
-  // eslint-disable-next-line no-console
-  console.log(`express server listening on port ${process.env.PORT}`);
+  res.redirect('/');
 });
 
-// function ensureAuthenticated(req,res,next)
-// {
-//   if(req.isAuthenticated())
-//   {
+app.listen(process.env.PORT, function () {
+  console.log('App is listening on port ' + process.env.PORT);
+});
+
+// Simple route middleware to ensure user is authenticated.
+//   Use this route middleware on any resource that needs to be protected.  If
+//   the request is authenticated (typically via a persistent login session),
+//   the request will proceed. Otherwise, the user will be redirected to the
+//   login page.
+
+//UNCOMMENT LATRER ON
+
+// function ensureAuthenticated(req, res, next) {
+//   if (req.isAuthenticated()) {
 //     return next();
 //   }
 //   res.redirect('/login');
