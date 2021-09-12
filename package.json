@@ -29,7 +29,10 @@
     ]
   },
   "dependencies": {
+    "@material-ui/core": "^4.12.3",
     "argon2": "^0.28.2",
+    "bootstrap": "^5.1.1",
+    "bootstrap-icons": "^1.5.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
@@ -40,7 +43,9 @@
     "passport-spotify": "^2.0.0",
     "pg": "^8.6.0",
     "react": "^17.0.2",
+    "react-bootstrap": "^1.6.3",
     "react-dom": "^17.0.2",
+    "react-icons": "^4.2.0",
     "request": "^2.88.2",
     "spotify": "^0.3.0"
   },

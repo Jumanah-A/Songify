@@ -1,0 +1,10 @@
+#root {
+  min-height: 100vh;
+  background-color: #181818;
+}
+
+@media only screen and (max-width: 600px) {
+  h2 {
+    font-size: 5vw;
+  }
+}
