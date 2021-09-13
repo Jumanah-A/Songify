@@ -2,12 +2,6 @@ import React from 'react';
 import { Row, Container } from 'react-bootstrap';
 
 export default function Welcome(props) {
-
-  const handleClick = () => {
-    // eslint-disable-next-line
-    console.log("Get recommendation button is pressed!")
-
-  };
   return (
     <div className='flex-center'>
       <Container>
@@ -16,7 +10,7 @@ export default function Welcome(props) {
         </Row>
         <Row>
           <div className='flex-center'>
-            <button onClick={handleClick} className='green-button margin-3 padding-1'><h6> <i className="bi bi-music-note-beamed white"></i>  Get song recommendations! </h6></button>
+            <a className='green-button margin-3 padding-1'href='#song-form'><h6> <i className="bi bi-music-note-beamed white"></i>  Get song recommendations! </h6></a>
           </div>
         </Row>
       </Container>

@@ -1,15 +1,40 @@
 h1,
-h2,
-h4,
-h5 {
+h2 {
   color: white;
   padding: 1rem;
+}
+
+h6 {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  color: white;
 }
 
 header {
   display: flex;
   justify-content: space-between;
   padding: 1rem;
+}
+
+input,
+select {
+  width: 100%;
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  background-color: #464646;
+  color: white;
+  outline-color: #5bc55a;
+}
+
+input::placeholder {
+  color: rgb(192, 187, 187);
 }
 
 .green-button {
@@ -28,7 +53,7 @@ header {
 }
 
 .padding-2 {
-  padding: 2rem;
+  padding: 0 2rem;
 }
 
 .text-center {
@@ -88,4 +113,9 @@ header {
 
 .spotify-icon {
   color: black;
+}
+
+.labels {
+  color: #d4d3d8;
+  padding: 1rem 0;
 }
