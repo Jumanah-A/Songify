@@ -187,7 +187,7 @@ export default class SongForm extends React.Component {
             <Row>
               <form onSubmit={this.handleSubmit} className="flex-column padding-2">
                 <label htmlFor="song" className="labels">
-                  <h5>Song Name:</h5>
+                  <h5>Song Name</h5>
                   <input
                     id="song"
                     type="text"
@@ -197,7 +197,7 @@ export default class SongForm extends React.Component {
                     required></input>
                 </label>
                 <label htmlFor="username" className="labels">
-                  <h5>Artist:</h5>
+                  <h5>Artist</h5>
                   <input
                     id="artist"
                     type="text"
@@ -207,7 +207,7 @@ export default class SongForm extends React.Component {
                     required></input>
                 </label>
                 <label htmlFor="genre" className="labels">
-                  <h5>Genre:</h5>
+                  <h5>Genre</h5>
                   <Select
                     name="genre"
                     onChange={this.handleChange}

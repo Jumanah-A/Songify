@@ -39,7 +39,6 @@ export default class App extends React.Component {
   render() {
     return (
     <>
-    {/* <Home></Home> */}
         {this.state.user !== null &&
       <>
         <Header>
