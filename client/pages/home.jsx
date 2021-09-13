@@ -21,7 +21,7 @@ export default function Home(props) {
           <h2>Sign in to your Spotify account to get started!</h2>
         </Row>
         <Row>
-          <div className='flex-end padding-2'>
+          <div className='flex-end padding-1'>
             <button onClick={handleClick} className='green-button'>  <h1><RiSpotifyFill className='spotify-icon' />Sign in to Spotify</h1><a href='/auth/spotify'></a></button>
           </div>
         </Row>
