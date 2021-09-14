@@ -1,6 +1,7 @@
 require('dotenv/config');
 const errorMiddleware = require('./error-middleware');
 const staticMiddleware = require('./static-middleware');
+const ClientError = require('./client-error');
 
 const express = require('express');
 const session = require('express-session');
@@ -47,6 +48,10 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(errorMiddleware);
+app.use(staticMiddleware);
+
+
 app.get(
   '/auth/spotify', passport.authenticate('spotify', {
     scope: ['user-read-email', 'user-read-private'],
@@ -62,37 +67,54 @@ app.get(
     res.redirect('/');
   }
 );
-
-app.get('/spotify/search', () => {
+//'/spotify/search/:track/:artist'
+app.get('/spotify/search/:track/:artist', (req,res) => {
   // RETURN SONG_ID AND ARTIST_ID
-  const Spotify = require('node-spotify-api');
+  let { track1, artist1} = req.params;
+  console.log(track1,artist1);
+  // const track = req.params.track.split(' ').join('+');
+  const track = '@+my+worst';
+  // const track = 'ghost+town';
 
+  const artist = 'blackbear';
+  let songId = {};
+  const Spotify = require('node-spotify-api');
   const spotify = new Spotify({
     id: CLIENT_ID,
     secret: CLIENT_SECRET
   });
-  spotify.search({ type: 'track,artist', query: 'Roses,gashi' }, function (err, data) {
-    if (err) {
-    // eslint-disable-next-line
-    return console.log('Error occurred: ' + err);
-    }
-    // eslint-disable-next-line
-  console.log(data.tracks.items[0]);
-    // eslint-disable-next-line
-  console.log(data.tracks.items.length)
-  // const extractInfo = data.tracks.items.map(x => x.artists );
-  // console.log(extractInfo);
-  });
+  spotify
+    .request(`https://api.spotify.com/v1/search?q=${track}%2C${artist}&type=track%2Cartist&market=US`)
+    .then(function (data) {
+      if(data.tracks.items.length === 0)
+      {
+        console.log("ohj no not found ")
+        throw new ClientError(400, 'The song and artist you have entered do not exist, please try again!');
+      }else
+      {
+        songId = [data.tracks.items[0]].map(x => ({ SongName: x.name, SongId: x.id, artistName: x.artists[0].name, artistId: x.artists[0].id }))[0];
+        console.log(songId);
+      }
+
+    })
+    .catch(function (err) {
+      console.error('Error occurred: ' + err);
+    });
 });
-app.get('/spotify/recs', () => {
+//'/spotify/recs/:artistId/:trackId/:genre'
+app.get('/spotify/recs/', (req,res) => {
+  // const { artistId, trackId, genre} = req.params;
   const Spotify = require('node-spotify-api');
+  const artistId = '2cFrymmkijnjDg9SS92EPM';
+  const trackId = '0mHGftgYtmpH4y17T3VZ2E';
+  const genre = 'pop';
 
   const spotify = new Spotify({
     id: CLIENT_ID,
     secret: CLIENT_SECRET
   });
   spotify
-    .request('https://api.spotify.com/v1/recommendations?market=US&seed_artists=0JOxt5QOwq0czoJxvSc5hS&seed_genres=pop&seed_tracks=6qc5EODnUU7XX4zn8B4c89')
+    .request(`https://api.spotify.com/v1/recommendations?market=US&seed_artists=${artistId}&seed_genres=${genre}&seed_tracks=${trackId}`)
     .then(function (data) {
       const extractInfo = data.tracks.map(x =>
         (
@@ -108,17 +130,12 @@ app.get('/spotify/recs', () => {
           }
         ));
         // eslint-disable-next-line
-      console.log(`THE RECOMMENDATIONS ARE HERE SIZE IS ${data.tracks.length}`);
-      // eslint-disable-next-line
       console.log(extractInfo);
     })
     .catch(function (err) {
       console.error('Error occurred: ' + err);
     });
 });
-
-app.use(errorMiddleware);
-app.use(staticMiddleware);
 
 app.listen(process.env.PORT, function () {
   // eslint-disable-next-line
