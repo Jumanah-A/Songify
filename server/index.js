@@ -12,9 +12,7 @@ const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const app = express();
 
 const jsonMiddleware = express.json();
-
 app.use(jsonMiddleware);
-
 const userAccess = {};
 
 passport.serializeUser(function (user, done) {
@@ -64,6 +62,61 @@ app.get(
     res.redirect('/');
   }
 );
+
+app.get('/spotify/search', () => {
+  // RETURN SONG_ID AND ARTIST_ID
+  const Spotify = require('node-spotify-api');
+
+  const spotify = new Spotify({
+    id: CLIENT_ID,
+    secret: CLIENT_SECRET
+  });
+  spotify.search({ type: 'track,artist', query: 'Roses,gashi' }, function (err, data) {
+    if (err) {
+    // eslint-disable-next-line
+    return console.log('Error occurred: ' + err);
+    }
+    // eslint-disable-next-line
+  console.log(data.tracks.items[0]);
+    // eslint-disable-next-line
+  console.log(data.tracks.items.length)
+  // const extractInfo = data.tracks.items.map(x => x.artists );
+  // console.log(extractInfo);
+  });
+});
+app.get('/spotify/recs', () => {
+  const Spotify = require('node-spotify-api');
+
+  const spotify = new Spotify({
+    id: CLIENT_ID,
+    secret: CLIENT_SECRET
+  });
+  spotify
+    .request('https://api.spotify.com/v1/recommendations?market=US&seed_artists=0JOxt5QOwq0czoJxvSc5hS&seed_genres=pop&seed_tracks=6qc5EODnUU7XX4zn8B4c89')
+    .then(function (data) {
+      const extractInfo = data.tracks.map(x =>
+        (
+          {
+            songName: x.name,
+            songId: x.id,
+            spotifyRedirectUrl: x.external_urls.spotify,
+            releaseDate: x.album.release_date,
+            imageUrl: x.album.images,
+            artists: x.artists,
+            previewUrl: x.preview_url,
+            trackUri: x.uri
+          }
+        ));
+        // eslint-disable-next-line
+      console.log(`THE RECOMMENDATIONS ARE HERE SIZE IS ${data.tracks.length}`);
+      // eslint-disable-next-line
+      console.log(extractInfo);
+    })
+    .catch(function (err) {
+      console.error('Error occurred: ' + err);
+    });
+});
+
 app.use(errorMiddleware);
 app.use(staticMiddleware);
 
