@@ -152,6 +152,7 @@ export default class SongForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    window.location.href = '#recommendations';
   }
 
   render() {
@@ -219,7 +220,7 @@ export default class SongForm extends React.Component {
                 </label>
                   <div className="flex-center margin-3">
                   <label htmlFor="submit">
-                    <button type="submit" className='green-button padding-1'><h6> <i className="bi bi-music-note-beamed white"></i> Songify! </h6></button>
+                    <button type="submit" className='green-button padding-1' onSubmit={this.handleSubmit}><h6> <i className="bi bi-music-note-beamed white"></i> Songify! </h6></button>
                   </label>
                 </div>
               </form>

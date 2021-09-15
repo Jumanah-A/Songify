@@ -3,8 +3,23 @@
   background-color: #181818;
 }
 
+/* img {
+  width: null,;
+  resizemode: 'contain',;
+  height: 220;
+} */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
 @media only screen and (max-width: 600px) {
   h2 {
+    font-size: 5vw;
+  }
+
+  h3 {
     font-size: 5vw;
   }
 }

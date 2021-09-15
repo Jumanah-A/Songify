@@ -8,6 +8,11 @@ h6 {
   margin: 0;
 }
 
+h3 {
+  color: white;
+  padding: 1rem;
+}
+
 a {
   text-decoration: none;
 }
@@ -37,11 +42,28 @@ input::placeholder {
   color: rgb(192, 187, 187);
 }
 
+.play-pause {
+  font-size: 3rem;
+}
+
 .green-button {
   background-color: #5bc55a;
   color: white;
   border: none;
   border-radius: 4rem;
+}
+
+.yes {
+  padding: 1rem 2rem;
+}
+
+.no {
+  padding: 1rem 2rem;
+  background-color: #822424;
+}
+
+.padding-left {
+  padding-left: 2rem;
 }
 
 .margin-3 {
@@ -97,6 +119,11 @@ input::placeholder {
   justify-content: space-evenly;
   align-items: center;
   padding: 2rem;
+}
+
+.align-center {
+  display: flex;
+  align-items: center;
 }
 
 .white {

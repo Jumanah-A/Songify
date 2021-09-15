@@ -70,12 +70,9 @@ app.get(
 //'/spotify/search/:track/:artist'
 app.get('/spotify/search/:track/:artist', (req,res) => {
   // RETURN SONG_ID AND ARTIST_ID
-  let { track1, artist1} = req.params;
-  console.log(track1,artist1);
-  // const track = req.params.track.split(' ').join('+');
+  // let { track, artist} = req.params;
   const track = '@+my+worst';
   // const track = 'ghost+town';
-
   const artist = 'blackbear';
   let songId = {};
   const Spotify = require('node-spotify-api');
@@ -88,10 +85,10 @@ app.get('/spotify/search/:track/:artist', (req,res) => {
     .then(function (data) {
       if(data.tracks.items.length === 0)
       {
-        console.log("ohj no not found ")
         throw new ClientError(400, 'The song and artist you have entered do not exist, please try again!');
       }else
       {
+        // eslint-disable-next-line
         songId = [data.tracks.items[0]].map(x => ({ SongName: x.name, SongId: x.id, artistName: x.artists[0].name, artistId: x.artists[0].id }))[0];
         console.log(songId);
       }
