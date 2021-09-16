@@ -155,7 +155,6 @@ export default class SongForm extends React.Component {
     const searchParams = new URLSearchParams(this.state);
     const queryString = '?' + searchParams.toString();
     window.location.hash = '#recommendations' + queryString;
-    // window.location.href = '#recommendations';
   }
 
   render() {

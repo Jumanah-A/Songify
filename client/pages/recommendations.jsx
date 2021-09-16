@@ -35,7 +35,6 @@ export default class Recommendations extends React.Component {
   }
 
   handlechangeSong() {
-    // console.log('in callback')
     let currentIndex = this.state.currentIndex;
     currentIndex++;
     const currentSong = this.state.recommendations[currentIndex];

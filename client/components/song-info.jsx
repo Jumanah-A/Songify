@@ -5,16 +5,12 @@ export default class SongInfo extends React.Component {
   constructor(props) {
     super(props);
     this.parent = this.props;
-    // console.log(this.props)
   }
 
   handleClick(event) {
     if (event.target.id === 'skip-song') {
-      // console.log("hi in skip")
-      // console.log(this.parent)
       this.props.changeSong();
     } else {
-      // console.log("hi in skip")
       this.props.changeSong();
     }
   }
