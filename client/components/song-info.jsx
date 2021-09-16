@@ -9,7 +9,7 @@ export default class SongInfo extends React.Component {
 
   handleClick(event) {
     if (event.target.id === 'skip-song') {
-      this.props.changeSong('none');
+      this.props.changeSong(null);
     } else {
       this.props.changeSong(this.props.recommendations);
     }

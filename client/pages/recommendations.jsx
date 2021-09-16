@@ -33,7 +33,7 @@ export default class Recommendations extends React.Component {
     let currentIndex = this.state.currentIndex;
     const likedSongs = this.state.likedSongs;
     currentIndex++;
-    if (song !== 'none') {
+    if (song !== null) {
       likedSongs.push(song);
     }
     if (currentIndex > 19) {
