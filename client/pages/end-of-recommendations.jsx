@@ -4,10 +4,6 @@ import { FaHeart } from 'react-icons/fa';
 import { GiPartyPopper } from 'react-icons/gi';
 
 export default function EndOfRecommendations(props) {
-  // const handleClick = () =>
-  // {
-  //   console.log("To the loved songs we go!!");
-  // }
   return (
     <>
       <div className='flex-center'>
