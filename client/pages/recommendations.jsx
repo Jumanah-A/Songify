@@ -25,15 +25,19 @@ export default class Recommendations extends React.Component {
 
   }
 
-  handleCurrent() {
-    this.setState({ currentSong: this.recommendations[this.currentIndex] });
+  endOfRecommendations() {
+    window.location.hash = '#endOfRecommendations';
   }
 
   handlechangeSong() {
     let currentIndex = this.state.currentIndex;
     currentIndex++;
     const currentSong = this.state.recommendations[currentIndex];
-    this.setState({ currentIndex, currentSong });
+    if (currentIndex > 19) {
+      this.endOfRecommendations();
+    } else {
+      this.setState({ currentIndex, currentSong });
+    }
   }
 
   render() {
