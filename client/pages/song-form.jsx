@@ -152,7 +152,10 @@ export default class SongForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    window.location.href = '#recommendations';
+    const searchParams = new URLSearchParams(this.state);
+    const queryString = '?' + searchParams.toString();
+    window.location.hash = '#recommendations' + queryString;
+    // window.location.href = '#recommendations';
   }
 
   render() {
@@ -179,55 +182,55 @@ export default class SongForm extends React.Component {
       })
     };
     return (
-    <div className="flex-center">
-      <div>
-          <Container>
-            <Row>
-              <h1 className="songify-header text-center">Fill in your favorite song information</h1>
-            </Row>
-            <Row>
-              <form onSubmit={this.handleSubmit} className="flex-column padding-2">
-                <label htmlFor="song" className="labels">
-                  <h5>Song Name</h5>
-                  <input
-                    id="song"
-                    type="text"
-                    name="song"
-                    onChange={this.handleChange}
-                    placeholder="Enter song name Ex: Mr.Brightside"
-                    required></input>
-                </label>
-                <label htmlFor="username" className="labels">
-                  <h5>Artist</h5>
-                  <input
-                    id="artist"
-                    type="text"
-                    name="artist"
-                    onChange={this.handleChange}
-                    placeholder="Enter artist name Ex: The Killers"
-                    required></input>
-                </label>
-                <label htmlFor="genre" className="labels">
-                  <h5>Genre</h5>
-                  <Select
-                    name="genre"
-                    onChange={this.handleChange}
-                    styles={customStyle}
-                    options={genres.map(t => ({ value: t, label: t, name: 'genre' }))}
-                    placeholder="Select genre Ex: rock"
-                    required
-                  />
-                </label>
-                  <div className="flex-center margin-3">
-                  <label htmlFor="submit">
-                    <button type="submit" className='green-button padding-1' onSubmit={this.handleSubmit}><h6> <i className="bi bi-music-note-beamed white"></i> Songify! </h6></button>
+      <div className="flex-center">
+        <div>
+            <Container>
+              <Row>
+                <h1 className="songify-header text-center">Fill in your favorite song information</h1>
+              </Row>
+              <Row>
+                <form onSubmit={this.handleSubmit} className="flex-column padding-2">
+                  <label htmlFor="song" className="labels">
+                    <h5>Song Name</h5>
+                    <input
+                      id="song"
+                      type="text"
+                      name="song"
+                      onChange={this.handleChange}
+                      placeholder="Enter song name Ex: Mr.Brightside"
+                      required></input>
                   </label>
-                </div>
-              </form>
-            </Row>
-          </Container>
+                  <label htmlFor="username" className="labels">
+                    <h5>Artist</h5>
+                    <input
+                      id="artist"
+                      type="text"
+                      name="artist"
+                      onChange={this.handleChange}
+                      placeholder="Enter artist name Ex: The Killers"
+                      required></input>
+                  </label>
+                  <label htmlFor="genre" className="labels">
+                    <h5>Genre</h5>
+                    <Select
+                      name="genre"
+                      onChange={this.handleChange}
+                      styles={customStyle}
+                      options={genres.map(t => ({ value: t, label: t, name: 'genre' }))}
+                      placeholder="Select genre Ex: rock"
+                      required
+                    />
+                  </label>
+                    <div className="flex-center margin-3">
+                    <label htmlFor="submit">
+                      <button type="submit" className='green-button padding-1' onSubmit={this.handleSubmit}><h6> <i className="bi bi-music-note-beamed white"></i> Songify! </h6></button>
+                    </label>
+                  </div>
+                </form>
+              </Row>
+            </Container>
+        </div>
       </div>
-    </div>
     );
 
   }

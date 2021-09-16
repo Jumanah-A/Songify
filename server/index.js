@@ -51,7 +51,6 @@ app.use(passport.session());
 app.use(errorMiddleware);
 app.use(staticMiddleware);
 
-
 app.get(
   '/auth/spotify', passport.authenticate('spotify', {
     scope: ['user-read-email', 'user-read-private'],
@@ -67,13 +66,9 @@ app.get(
     res.redirect('/');
   }
 );
-//'/spotify/search/:track/:artist'
-app.get('/spotify/search/:track/:artist', (req,res) => {
-  // RETURN SONG_ID AND ARTIST_ID
-  // let { track, artist} = req.params;
-  const track = '@+my+worst';
-  // const track = 'ghost+town';
-  const artist = 'blackbear';
+
+app.get('/spotify/search/:track/:artist', (req, res) => {
+  const { track, artist } = req.params;
   let songId = {};
   const Spotify = require('node-spotify-api');
   const spotify = new Spotify({
@@ -83,14 +78,11 @@ app.get('/spotify/search/:track/:artist', (req,res) => {
   spotify
     .request(`https://api.spotify.com/v1/search?q=${track}%2C${artist}&type=track%2Cartist&market=US`)
     .then(function (data) {
-      if(data.tracks.items.length === 0)
-      {
+      if (data.tracks.items.length === 0) {
         throw new ClientError(400, 'The song and artist you have entered do not exist, please try again!');
-      }else
-      {
-        // eslint-disable-next-line
+      } else {
         songId = [data.tracks.items[0]].map(x => ({ SongName: x.name, SongId: x.id, artistName: x.artists[0].name, artistId: x.artists[0].id }))[0];
-        console.log(songId);
+        res.json(songId);
       }
 
     })
@@ -98,13 +90,10 @@ app.get('/spotify/search/:track/:artist', (req,res) => {
       console.error('Error occurred: ' + err);
     });
 });
-//'/spotify/recs/:artistId/:trackId/:genre'
-app.get('/spotify/recs/', (req,res) => {
-  // const { artistId, trackId, genre} = req.params;
+
+app.get('/spotify/recs/:artistId/:trackId/:genre', (req, res) => {
+  const { artistId, trackId, genre } = req.params;
   const Spotify = require('node-spotify-api');
-  const artistId = '2cFrymmkijnjDg9SS92EPM';
-  const trackId = '0mHGftgYtmpH4y17T3VZ2E';
-  const genre = 'pop';
 
   const spotify = new Spotify({
     id: CLIENT_ID,
@@ -121,13 +110,13 @@ app.get('/spotify/recs/', (req,res) => {
             spotifyRedirectUrl: x.external_urls.spotify,
             releaseDate: x.album.release_date,
             imageUrl: x.album.images,
+            album: x.album.name,
             artists: x.artists,
             previewUrl: x.preview_url,
             trackUri: x.uri
           }
         ));
-        // eslint-disable-next-line
-      console.log(extractInfo);
+      res.json(extractInfo);
     })
     .catch(function (err) {
       console.error('Error occurred: ' + err);

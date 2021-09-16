@@ -1,7 +1,6 @@
 h1,
 h2 {
   color: white;
-  padding: 1rem;
 }
 
 h6 {
@@ -10,7 +9,8 @@ h6 {
 
 h3 {
   color: white;
-  padding: 1rem;
+  padding: 0.5rem;
+  font-weight: 200;
 }
 
 a {
@@ -43,7 +43,8 @@ input::placeholder {
 }
 
 .play-pause {
-  font-size: 3rem;
+  font-size: 2rem;
+  color: #5bc55a;
 }
 
 .green-button {
@@ -51,6 +52,7 @@ input::placeholder {
   color: white;
   border: none;
   border-radius: 4rem;
+  width: auto;
 }
 
 .yes {
@@ -58,7 +60,7 @@ input::placeholder {
 }
 
 .no {
-  padding: 1rem 2rem;
+  padding: 0.5rem 1rem;
   background-color: #822424;
 }
 
@@ -78,12 +80,20 @@ input::placeholder {
   padding: 0 2rem;
 }
 
+.padding-3 {
+  padding: 0 3rem;
+}
+
 .text-center {
   text-align: center;
 }
 
 .green-button:hover {
   background-color: #2d7c2d;
+}
+
+.no:hover {
+  background-color: #5f1919;
 }
 
 .flex-column {
@@ -94,6 +104,16 @@ input::placeholder {
 .flex-end {
   display: flex;
   justify-content: flex-end;
+}
+
+.space-evenly {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.space-between {
+  display: flex;
+  justify-content: space-between;
 }
 
 .flex-center {
@@ -136,6 +156,7 @@ input::placeholder {
 
 .songify-header {
   color: #5bc55a;
+  padding: 1rem;
 }
 
 .spotify-icon {

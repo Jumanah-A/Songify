@@ -3,11 +3,6 @@
   background-color: #181818;
 }
 
-/* img {
-  width: null,;
-  resizemode: 'contain',;
-  height: 220;
-} */
 img {
   display: block;
   max-width: 100%;
@@ -21,5 +16,11 @@ img {
 
   h3 {
     font-size: 5vw;
+    font-weight: 200;
+    padding: 0.5rem;
+  }
+
+  img {
+    padding: 2rem;
   }
 }
