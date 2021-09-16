@@ -12,15 +12,10 @@ export default class Recommendations extends React.Component {
   }
 
   componentDidMount() {
-    const urlSearchParams = new URLSearchParams(window.location.hash);
-    const params = Object.fromEntries(urlSearchParams.entries());
-    const { artist, genre } = params;
-    const song = params['#recommendations?song'];
-
-    fetch(`/spotify/search/${song}/${artist}`)
+    fetch(`/spotify/search/${this.props.params.get('song')}/${this.props.params.get('artist')}`)
       .then(res => res.json())
       .then(data => {
-        fetch(`/spotify/recs/${data.artistId}/${data.SongId}/:${genre}`)
+        fetch(`/spotify/recs/${data.artistId}/${data.SongId}/:${this.props.params.get('genre')}`)
           .then(res => res.json())
           .then(recommendationArray => {
             this.setState({ recommendations: recommendationArray });
@@ -42,13 +37,12 @@ export default class Recommendations extends React.Component {
   }
 
   render() {
-    const recommendations = this.state.recommendations;
     return (
     <>
     <div className='padding-1'>
       <h1 className='songify-header padding-3'>Recommendations</h1>
-      {recommendations.length !== 0 &&
-      <SongInfo changeSong={this.handlechangeSong} recommendations={recommendations[this.state.currentIndex]}></SongInfo>
+      {this.state.recommendations.length !== 0 &&
+      <SongInfo changeSong={this.handlechangeSong} recommendations={this.state.recommendations[this.state.currentIndex]}></SongInfo>
       }
     </div>
 

@@ -33,10 +33,9 @@ export default class App extends React.Component {
     if (route.path === 'song-form') {
       return <SongForm></SongForm>;
     } else if (route.path === 'recommendations') {
-      return <Recommendations></Recommendations>
+      return <Recommendations params={this.state.route.params}></Recommendations>;
 
-    }else if(route.path === '')
-    {
+    } else if (route.path === '') {
       return <Welcome name={user.displayName}></Welcome>;
     }
   }
