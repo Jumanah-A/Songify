@@ -38,7 +38,7 @@ export default class App extends React.Component {
 
     } else if (route.path === '') {
       return <Welcome name={user.displayName}></Welcome>;
-    } else if (route.path === '#endOfRecommendations') {
+    } else if (route.path === 'endOfRecommendations') {
       return <EndOfRecommendations></EndOfRecommendations>;
     }
   }

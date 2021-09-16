@@ -5,7 +5,8 @@ export default class Recommendations extends React.Component {
     super(props);
     this.state = {
       currentIndex: 0,
-      recommendations: []
+      recommendations: [],
+      likedSongs: []
     };
     this.handlechangeSong = this.handlechangeSong.bind(this);
   }
@@ -28,13 +29,17 @@ export default class Recommendations extends React.Component {
     window.location.hash = '#endOfRecommendations';
   }
 
-  handlechangeSong() {
+  handlechangeSong(song) {
     let currentIndex = this.state.currentIndex;
+    const likedSongs = this.state.likedSongs;
     currentIndex++;
+    if (song !== null) {
+      likedSongs.push(song);
+    }
     if (currentIndex > 19) {
       this.endOfRecommendations();
     } else {
-      this.setState({ currentIndex });
+      this.setState({ currentIndex, likedSongs });
     }
   }
 
