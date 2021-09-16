@@ -1,20 +1,20 @@
 require('dotenv/config');
 const errorMiddleware = require('./error-middleware');
 const staticMiddleware = require('./static-middleware');
+const ClientError = require('./client-error');
 
 const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 const SpotifyStrategy = require('passport-spotify').Strategy;
+const Spotify = require('node-spotify-api');
 
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const app = express();
 
 const jsonMiddleware = express.json();
-
 app.use(jsonMiddleware);
-
 const userAccess = {};
 
 passport.serializeUser(function (user, done) {
@@ -49,6 +49,9 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(errorMiddleware);
+app.use(staticMiddleware);
+
 app.get(
   '/auth/spotify', passport.authenticate('spotify', {
     scope: ['user-read-email', 'user-read-private'],
@@ -64,8 +67,60 @@ app.get(
     res.redirect('/');
   }
 );
-app.use(errorMiddleware);
-app.use(staticMiddleware);
+
+app.get('/spotify/search/:track/:artist', (req, res) => {
+  const { track, artist } = req.params;
+  let songId = {};
+  const spotify = new Spotify({
+    id: CLIENT_ID,
+    secret: CLIENT_SECRET
+  });
+  spotify
+    .request(`https://api.spotify.com/v1/search?q=${track}%2C${artist}&type=track%2Cartist&market=US`)
+    .then(function (data) {
+      if (data.tracks.items.length === 0) {
+        throw new ClientError(400, 'The song and artist you have entered do not exist, please try again!');
+      } else {
+        songId = [data.tracks.items[0]].map(x => ({ SongName: x.name, SongId: x.id, artistName: x.artists[0].name, artistId: x.artists[0].id }))[0];
+        res.json(songId);
+      }
+
+    })
+    .catch(function (err) {
+      console.error('Error occurred: ' + err);
+    });
+});
+
+app.get('/spotify/recs/:artistId/:trackId/:genre', (req, res) => {
+  const { artistId, trackId, genre } = req.params;
+
+  const spotify = new Spotify({
+    id: CLIENT_ID,
+    secret: CLIENT_SECRET
+  });
+  spotify
+    .request(`https://api.spotify.com/v1/recommendations?market=US&seed_artists=${artistId}&seed_genres=${genre}&seed_tracks=${trackId}`)
+    .then(function (data) {
+      const extractInfo = data.tracks.map(x =>
+        (
+          {
+            songName: x.name,
+            songId: x.id,
+            spotifyRedirectUrl: x.external_urls.spotify,
+            releaseDate: x.album.release_date,
+            imageUrl: x.album.images,
+            album: x.album.name,
+            artists: x.artists,
+            previewUrl: x.preview_url,
+            trackUri: x.uri
+          }
+        ));
+      res.json(extractInfo);
+    })
+    .catch(function (err) {
+      console.error('Error occurred: ' + err);
+    });
+});
 
 app.listen(process.env.PORT, function () {
   // eslint-disable-next-line
