@@ -4,7 +4,7 @@ import { FiPlayCircle } from 'react-icons/fi';
 export default class SongInfo extends React.Component {
   constructor(props) {
     super(props);
-    this.parent = this.props;
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick(event) {
