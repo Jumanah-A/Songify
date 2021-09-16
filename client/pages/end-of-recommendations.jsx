@@ -9,7 +9,7 @@ export default function EndOfRecommendations(props) {
       <div className='flex-center'>
         <Container>
           <Row>
-            <h1 className='text-center'><GiPartyPopper/> Hurray you have reviewed all the recommended songs!</h1>
+            <h1 className='text-center'><GiPartyPopper/> You have reviewed all the recommended songs!</h1>
           </Row>
           <Row>
             <div className='flex-center'>

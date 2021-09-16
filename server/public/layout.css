@@ -10,6 +10,10 @@ img {
 }
 
 @media only screen and (max-width: 600px) {
+  h1 {
+    font-size: 6.5vw;
+  }
+
   h2 {
     font-size: 5vw;
   }
