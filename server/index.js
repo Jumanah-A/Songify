@@ -7,6 +7,7 @@ const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 const SpotifyStrategy = require('passport-spotify').Strategy;
+const Spotify = require('node-spotify-api');
 
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
@@ -70,7 +71,6 @@ app.get(
 app.get('/spotify/search/:track/:artist', (req, res) => {
   const { track, artist } = req.params;
   let songId = {};
-  const Spotify = require('node-spotify-api');
   const spotify = new Spotify({
     id: CLIENT_ID,
     secret: CLIENT_SECRET
@@ -93,7 +93,6 @@ app.get('/spotify/search/:track/:artist', (req, res) => {
 
 app.get('/spotify/recs/:artistId/:trackId/:genre', (req, res) => {
   const { artistId, trackId, genre } = req.params;
-  const Spotify = require('node-spotify-api');
 
   const spotify = new Spotify({
     id: CLIENT_ID,
