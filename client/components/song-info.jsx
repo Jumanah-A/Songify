@@ -1,20 +1,37 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { FiPlayCircle, FiPauseCircle } from 'react-icons/fi';
+import { FaRegSadCry } from 'react-icons/fa';
+import { Howl } from 'howler';
 export default class SongInfo extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { previewPlay: false, audio: new Audio(this.props.recommendations.previewUrl) };
+    this.state = {
+      previewPlay: false,
+      audio: new Howl({
+        src: [this.props.recommendations.previewUrl],
+        html5: true
+      })
+    };
     this.handleClick = this.handleClick.bind(this);
     this.handlePlayPause = this.handlePlayPause.bind(this);
     this.handleAudio = this.handleAudio.bind(this);
-    this.url = this.props.recommendations.previewUrl;
-    this.audio = new Audio(this.url);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.recommendations.previewUrl !== prevProps.recommendations.previewUrl) {
+      this.setState({
+        audio: new Howl({
+          src: [this.props.recommendations.previewUrl],
+          html5: true
+        }),
+        previewPlay: false
+      });
+    }
   }
 
   handleClick(event) {
-    this.url = this.props.recommendations.previewUrl;
-    this.setState({ audio: new Audio(this.url) });
+    this.state.audio.stop();
     if (event.target.id === 'skip-song') {
       this.props.changeSong(null);
     } else {
@@ -28,7 +45,6 @@ export default class SongInfo extends React.Component {
     } else {
       this.state.audio.pause();
     }
-
   }
 
   handlePlayPause() {
@@ -40,7 +56,6 @@ export default class SongInfo extends React.Component {
 
   render() {
     const { songName, artists, album, releaseDate, imageUrl } = this.props.recommendations;
-    this.url = this.props.recommendations.previewUrl;
     return (
     <>
     <Container>
@@ -54,16 +69,24 @@ export default class SongInfo extends React.Component {
           <h3>Artists: {artists[0].name}</h3>
           <h3>Album: {album}</h3>
           <h3>Year: {releaseDate.substring(0, 4)}</h3>
-          <div className='flex-center align-center'>
-            {!this.state.previewPlay &&
+          <div className='align-center'>
+            {this.props.recommendations.previewUrl !== null && !this.state.previewPlay &&
             <>
               <button className='no-style' onClick={this.handlePlayPause}><FiPlayCircle className='play-pause'/></button>
+              <h6 className='songify-header padding-left'>Play song preview</h6>
             </>
             }
-            {this.state.previewPlay &&
+            {this.props.recommendations.previewUrl !== null && this.state.previewPlay &&
+            <>
               <button className='no-style' onClick={this.handlePlayPause}><FiPauseCircle className='play-pause'/></button>
+              <h6 className='songify-header padding-left'>Play song preview</h6>
+              </>
             }
-            <h6 className='songify-header padding-left'>Play song preview</h6>
+            {this.props.recommendations.previewUrl === null &&
+            <>
+              <h6 className='songify-header'><span className='icon'><FaRegSadCry/></span> Song preview is currently not available </h6>
+              </>
+            }
           </div>
 
         </div>
