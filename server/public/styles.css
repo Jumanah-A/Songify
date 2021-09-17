@@ -24,7 +24,7 @@ a:hover {
 header {
   display: flex;
   justify-content: space-between;
-  padding: 1rem;
+  padding: 0 1rem;
 }
 
 input,
@@ -76,6 +76,10 @@ input::placeholder {
   padding: 1rem;
 }
 
+.padding-0-1 {
+  padding: 0 1rem;
+}
+
 .padding-2 {
   padding: 0 2rem;
 }
@@ -116,9 +120,19 @@ input::placeholder {
   justify-content: space-between;
 }
 
+.space-around {
+  display: flex;
+  justify-content: space-around;
+}
+
 .flex-center {
   display: flex;
   justify-content: center;
+}
+
+.flex-normal {
+  display: flex;
+  justify-content: normal;
 }
 
 .no-style {
@@ -157,6 +171,14 @@ input::placeholder {
 .songify-header {
   color: #5bc55a;
   padding: 1rem;
+}
+
+.green {
+  color: #5bc55a;
+}
+
+.sad-icon {
+  color: #822424;
 }
 
 .spotify-icon {

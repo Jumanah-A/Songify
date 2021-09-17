@@ -19,12 +19,12 @@ img {
   }
 
   h3 {
-    font-size: 5vw;
+    font-size: 4.5vw;
     font-weight: 200;
     padding: 0.5rem;
   }
 
-  img {
-    padding: 2rem;
+  h6 {
+    font-size: 3.5vw;
   }
 }

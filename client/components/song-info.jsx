@@ -60,11 +60,11 @@ export default class SongInfo extends React.Component {
     <>
     <Container>
       <Row xs={1} md={2} className="padding-1">
-        <Col className={window.innerWidth <= 767 ? 'flex-center' : 'space-evenly'}>
+        <Col className={window.innerWidth <= 767 ? 'flex-normal' : 'space-evenly'}>
           <img src={imageUrl[1].url}></img>
         </Col>
-        <Col className={window.innerWidth <= 767 ? 'flex-center' : 'space-between'}>
-        <div className='flex-column flex-center'>
+        <Col className={window.innerWidth <= 767 ? 'flex-normal' : 'space-between'}>
+        <div className='flex-column flex-center padding-1'>
           <h3>Name: {songName}</h3>
           <h3>Artists: {artists[0].name}</h3>
           <h3>Album: {album}</h3>
@@ -84,7 +84,7 @@ export default class SongInfo extends React.Component {
             }
             {this.props.recommendations.previewUrl === null &&
             <>
-              <h6 className='songify-header'><span className='icon'><FaRegSadCry/></span> Song preview is currently not available </h6>
+              <span className='icon'><FaRegSadCry className=' sad-icon'/></span><h6 className='green'> Song preview is not available </h6>
               </>
             }
           </div>
@@ -92,7 +92,7 @@ export default class SongInfo extends React.Component {
         </div>
         </Col>
       </Row>
-      <Row className='space-evenly padding-1'>
+      <Row className='space-around padding-1'>
         <button id='skip-song' onClick={this.handleClick} className='green-button no'>Meh...not my vibe</button>
         <button id='like-song' onClick={this.handleClick} className='green-button'>Love it!</button>
       </Row>
