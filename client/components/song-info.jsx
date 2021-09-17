@@ -1,13 +1,20 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { FiPlayCircle } from 'react-icons/fi';
+import { FiPlayCircle, FiPauseCircle } from 'react-icons/fi';
 export default class SongInfo extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { previewPlay: false, audio: new Audio(this.props.recommendations.previewUrl) };
     this.handleClick = this.handleClick.bind(this);
+    this.handlePlayPause = this.handlePlayPause.bind(this);
+    this.handleAudio = this.handleAudio.bind(this);
+    this.url = this.props.recommendations.previewUrl;
+    this.audio = new Audio(this.url);
   }
 
   handleClick(event) {
+    this.url = this.props.recommendations.previewUrl;
+    this.setState({ audio: new Audio(this.url) });
     if (event.target.id === 'skip-song') {
       this.props.changeSong(null);
     } else {
@@ -15,8 +22,25 @@ export default class SongInfo extends React.Component {
     }
   }
 
+  handleAudio(state) {
+    if (state) {
+      this.state.audio.play();
+    } else {
+      this.state.audio.pause();
+    }
+
+  }
+
+  handlePlayPause() {
+    this.handleAudio(!this.state.previewPlay);
+    this.setState(prevState => ({
+      previewPlay: !prevState.previewPlay
+    }));
+  }
+
   render() {
     const { songName, artists, album, releaseDate, imageUrl } = this.props.recommendations;
+    this.url = this.props.recommendations.previewUrl;
     return (
     <>
     <Container>
@@ -29,9 +53,16 @@ export default class SongInfo extends React.Component {
           <h3>Name: {songName}</h3>
           <h3>Artists: {artists[0].name}</h3>
           <h3>Album: {album}</h3>
-          <h3>Year: {releaseDate}</h3>
+          <h3>Year: {releaseDate.substring(0, 4)}</h3>
           <div className='flex-center align-center'>
-            <FiPlayCircle className='play-pause'/>
+            {!this.state.previewPlay &&
+            <>
+              <button className='no-style' onClick={this.handlePlayPause}><FiPlayCircle className='play-pause'/></button>
+            </>
+            }
+            {this.state.previewPlay &&
+              <button className='no-style' onClick={this.handlePlayPause}><FiPauseCircle className='play-pause'/></button>
+            }
             <h6 className='songify-header padding-left'>Play song preview</h6>
           </div>
 

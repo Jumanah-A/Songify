@@ -49,7 +49,7 @@ export default class Recommendations extends React.Component {
     <div className='padding-1'>
       <h1 className='songify-header padding-3'>Recommendations</h1>
       {this.state.recommendations.length !== 0 &&
-      <SongInfo changeSong={this.handlechangeSong} recommendations={this.state.recommendations[this.state.currentIndex]}></SongInfo>
+      <SongInfo changeSong={this.handlechangeSong} previewUrl={this.state.recommendations[this.state.currentIndex].previewUrl} recommendations={this.state.recommendations[this.state.currentIndex]}></SongInfo>
       }
     </div>
 
