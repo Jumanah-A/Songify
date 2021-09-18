@@ -1,5 +1,6 @@
 import React from 'react';
 import SongInfo from '../components/song-info';
+// import AppContext from '../lib/context';
 export default class Recommendations extends React.Component {
   constructor(props) {
     super(props);
@@ -37,23 +38,29 @@ export default class Recommendations extends React.Component {
       likedSongs.push(song);
     }
     if (currentIndex > 19) {
+      this.handleLikes();
       this.endOfRecommendations();
     } else {
       this.setState({ currentIndex, likedSongs });
     }
   }
 
+  handleLikes() {
+    this.props.handleLikes(this.state.likedSongs);
+  }
+
   render() {
     return (
-    <>
-    <div className='padding-0-1'>
-      <h1 className='songify-header'>Recommendations</h1>
-      {this.state.recommendations.length !== 0 &&
-      <SongInfo changeSong={this.handlechangeSong} previewUrl={this.state.recommendations[this.state.currentIndex].previewUrl} recommendations={this.state.recommendations[this.state.currentIndex]}></SongInfo>
-      }
-    </div>
+        <>
+        <div className='padding-0-1'>
+          <h1 className='songify-header'>Recommendations</h1>
+          {this.state.recommendations.length !== 0 &&
+          <SongInfo changeSong={this.handlechangeSong} previewUrl={this.state.recommendations[this.state.currentIndex].previewUrl} recommendations={this.state.recommendations[this.state.currentIndex]}></SongInfo>
+          }
+        </div>
 
-    </>);
+        </>
+    );
 
   }
 }
