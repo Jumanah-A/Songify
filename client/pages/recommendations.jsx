@@ -1,6 +1,5 @@
 import React from 'react';
 import SongInfo from '../components/song-info';
-// import AppContext from '../lib/context';
 export default class Recommendations extends React.Component {
   constructor(props) {
     super(props);
