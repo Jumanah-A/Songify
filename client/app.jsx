@@ -53,7 +53,7 @@ export default class App extends React.Component {
   render() {
     return (
     <>
-        {this.state.user !== null &&
+        {this.state.user  &&
       <>
         <Header>
         </Header>
