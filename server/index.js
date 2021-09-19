@@ -25,10 +25,9 @@ passport.deserializeUser(function (obj, done) {
   done(null, obj);
 });
 
-var SpotifyWebApi = require('spotify-web-api-node');
+const SpotifyWebApi = require('spotify-web-api-node');
 
-// credentials are optional
-var spotifyApi = new SpotifyWebApi({
+const spotifyApi = new SpotifyWebApi({
   clientId: CLIENT_ID,
   clientSecret: CLIENT_SECRET,
   redirectUri: process.env.SPOTIFY_AUTH_CALLBACK
@@ -46,7 +45,6 @@ passport.use(
         return done(null, profile);
       });
       userAccess.accessToken = accessToken;
-      console.log('HELLOW',accessToken);
       spotifyApi.setAccessToken(accessToken);
       spotifyApi.setRefreshToken(refreshToken);
     }
@@ -65,7 +63,7 @@ app.use(staticMiddleware);
 
 app.get(
   '/auth/spotify', passport.authenticate('spotify', {
-    scope: ['user-read-email', 'user-read-private','playlist-modify-public','playlist-modify-private'],
+    scope: ['user-read-email', 'user-read-private', 'playlist-modify-public', 'playlist-modify-private'],
     showDialog: true
   })
 );
@@ -133,27 +131,29 @@ app.get('/spotify/recs/:artistId/:trackId/:genre', (req, res) => {
     });
 });
 
-app.post('/spotify/create-playlist', (req,res,next) => {
-  spotifyApi.createPlaylist('Songify', { 'description': 'Your Songify recommendation playlist', 'public': false })
+app.post('/spotify/create-playlist', (req, res, next) => {
+  spotifyApi.createPlaylist('Songify', { description: 'Your Songify recommendation playlist', public: false })
     .then(function (data) {
+      // eslint-disable-next-line
       console.log('Created playlist!');
       res.json(data);
     }, function (err) {
+      // eslint-disable-next-line
       console.log('Something went wrong!', err);
     });
 
-})
+});
 app.post('/spotify/addTracks/:playlistId/:trackId', (req, res, next) => {
-  let { playlistId, trackId } = req.params;
-  trackId = [trackId];
-  console.log(trackId)
-  spotifyApi.addTracksToPlaylist(playlistId, trackId)
+  const { playlistId, trackId } = req.params;
+  spotifyApi.addTracksToPlaylist(playlistId, trackId.split(','))
     .then(function (data) {
+      // eslint-disable-next-line
       console.log('Added tracks to playlist!');
     }, function (err) {
+      // eslint-disable-next-line
       console.log('Something went wrong!', err);
     });
-})
+});
 
 app.listen(process.env.PORT, function () {
   // eslint-disable-next-line
@@ -163,18 +163,19 @@ app.listen(process.env.PORT, function () {
 // UNCOMMENT LATER ON
 // use as authentication middleware for making request to the user data
 
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect('/auth/spotify');
-}
+// function ensureAuthenticated(req, res, next) {
+//   if (req.isAuthenticated()) {
+//     return next();
+//   }
+//   res.redirect('/auth/spotify');
+// }
 
 app.get('/auth/logout', function (req, res) {
+  // eslint-disable-next-line
   console.log('user is logged out');
   req.logout();
-  res.clearCookie("userName");
-  res.clearCookie("connect.sid");
+  res.clearCookie('userName');
+  res.clearCookie('connect.sid');
   res.redirect('/auth/spotify');
 });
 // test comment
