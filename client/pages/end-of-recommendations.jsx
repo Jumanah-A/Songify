@@ -13,7 +13,7 @@ export default function EndOfRecommendations(props) {
           </Row>
           <Row>
             <div className='flex-center'>
-              <a className='green-button margin-3 padding-1' href='#song-form'><h6> <FaHeart/>  Go to liked songs! </h6></a>
+              <a className='green-button margin-3 padding-1' href='#liked-songs'><h6> <FaHeart/>  Go to liked songs! </h6></a>
             </div>
           </Row>
         </Container>

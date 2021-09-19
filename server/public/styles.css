@@ -1,10 +1,16 @@
 h1,
-h2 {
+h2,
+h4 {
   color: white;
 }
 
 h6 {
   margin: 0;
+}
+
+p {
+  font-weight: 200;
+  color: white;
 }
 
 h3 {
@@ -110,6 +116,11 @@ input::placeholder {
   justify-content: flex-end;
 }
 
+.flex-start {
+  display: flex;
+  justify-content: flex-start;
+}
+
 .space-evenly {
   display: flex;
   justify-content: space-evenly;
@@ -188,4 +199,8 @@ input::placeholder {
 .labels {
   color: #d4d3d8;
   padding: 1rem 0;
+}
+
+.padding-05 {
+  padding: 0.5rem 0;
 }
