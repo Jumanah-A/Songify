@@ -52,7 +52,7 @@ passport.use(
 );
 
 app.use(
-  session({ secret: 'keyboard cat', resave: true, saveUninitialized: true })
+  session({ secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true })
 );
 
 app.use(passport.initialize());
