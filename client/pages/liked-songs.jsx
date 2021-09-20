@@ -1,10 +1,51 @@
 import React from 'react';
 import { Row, Container, Col } from 'react-bootstrap';
-import { RiPlayListAddLine, RiCloseCircleFill } from 'react-icons/ri';
+import { RiPlayListAddLine } from 'react-icons/ri';
 
 export default class LikedSongs extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.addTracks = this.addTracks.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.state = { playlistId: null, currentAdd: [], currentLikes: [...this.props.likes], likesAdded: [...this.props.likes] };
+  }
+
+  componentDidMount() {
+    const req = {
+      method: 'POST'
+    };
+
+    fetch('/spotify/create-playlist', req)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({ playlistId: data.body.id });
+      })
+      .catch(err => console.error(err));
+
+  }
+
+  addTracks(trackUri, trackId, index) {
+    const current = this.state.currentLikes;
+    current.splice(index, 1);
+    const temp = this.state.currentAdd;
+    temp.push(trackUri);
+    this.setState({ currentLikes: current, currentAdd: temp });
+
+  }
+
+  handleClick() {
+    const req = {
+      method: 'POST'
+    };
+    fetch(`/spotify/addTracks/${this.state.playlistId}/${this.state.currentAdd}`, req)
+      .then(res => res.json())
+      .catch(err => console.error(err));
+    window.location.hash = '#songify-playlist';
+  }
+
   render() {
-    const songItems = this.props.likes.map(song =>
+    const songItems = this.state.currentLikes.map(song =>
       <div key={song.songId}>
       <Row key={song.songId} className='padding-05'>
           <Col ><img className='listImage' src={song.imageUrl[2].url}></img></Col>
@@ -12,8 +53,7 @@ export default class LikedSongs extends React.Component {
           <Col className='align-center'><p>{song.artists[0].name}</p></Col>
         <Col >
           <div className='flex-start'>
-            <h3><RiCloseCircleFill className='sad-icon' /></h3>
-            <h3><RiPlayListAddLine className='green' /></h3>
+              <button onClick={() => { this.addTracks(song.trackUri, song.songId, this.state.currentLikes.indexOf(song)); }} className='no-style'><h3><RiPlayListAddLine className='green' /></h3></button>
           </div>
         </Col>
       </Row>
@@ -34,6 +74,9 @@ export default class LikedSongs extends React.Component {
           <div className='padding-1'>
             {songItems}
           </div>
+          <Row className='flex-center'>
+            <button onClick={this.handleClick} className='green-button padding-1 margin-2'>View Songify Playlist!</button>
+          </Row>
         </Container>
       </>
     );

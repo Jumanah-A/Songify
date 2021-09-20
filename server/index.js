@@ -25,6 +25,13 @@ passport.deserializeUser(function (obj, done) {
   done(null, obj);
 });
 
+const SpotifyWebApi = require('spotify-web-api-node');
+
+const spotifyApi = new SpotifyWebApi({
+  clientId: CLIENT_ID,
+  clientSecret: CLIENT_SECRET,
+  redirectUri: process.env.SPOTIFY_AUTH_CALLBACK
+});
 passport.use(
   new SpotifyStrategy(
     {
@@ -38,6 +45,8 @@ passport.use(
         return done(null, profile);
       });
       userAccess.accessToken = accessToken;
+      spotifyApi.setAccessToken(accessToken);
+      spotifyApi.setRefreshToken(refreshToken);
     }
   )
 );
@@ -54,7 +63,7 @@ app.use(staticMiddleware);
 
 app.get(
   '/auth/spotify', passport.authenticate('spotify', {
-    scope: ['user-read-email', 'user-read-private'],
+    scope: ['user-read-email', 'user-read-private', 'playlist-modify-public', 'playlist-modify-private'],
     showDialog: true
   })
 );
@@ -122,26 +131,37 @@ app.get('/spotify/recs/:artistId/:trackId/:genre', (req, res) => {
     });
 });
 
+app.post('/spotify/create-playlist', ensureAuthenticated, (req, res, next) => {
+  spotifyApi.createPlaylist('Songify', { description: 'Your Songify recommendation playlist', public: false })
+    .then(function (data) {
+      res.json(data);
+    })
+    .catch(err => next(err));
+
+});
+app.post('/spotify/addTracks/:playlistId/:trackId', ensureAuthenticated, (req, res, next) => {
+  const { playlistId, trackId } = req.params;
+  spotifyApi.addTracksToPlaylist(playlistId, trackId.split(','))
+    .then(function (data) {
+      res.json(data);
+    })
+    .catch(err => next(err));
+});
+
 app.listen(process.env.PORT, function () {
   // eslint-disable-next-line
   console.log('App is listening on port ' + process.env.PORT);
 });
 
-// UNCOMMENT LATER ON
-// use as authentication middleware for making request to the user data
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/auth/spotify');
+}
 
-// function ensureAuthenticated(req, res, next) {
-//   if (req.isAuthenticated()) {
-//     return next();
-//   }
-//   res.redirect('/login');
-// }
-
-// app.get('/auth/logout', function (req, res) {
-// console.log('user is logged out')
-// res.clearCookie('userName');
-// req.session.destroy();
-// req.logout();
-// res.redirect('/');
-// });
-// test comment
+app.get('/auth/logout', function (req, res) {
+  req.logout();
+  res.clearCookie('userName');
+  res.redirect('/auth/spotify');
+});

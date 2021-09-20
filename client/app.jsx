@@ -4,6 +4,7 @@ import Welcome from './pages/welcome';
 import Recommendations from './pages/recommendations';
 import EndOfRecommendations from './pages/end-of-recommendations';
 import LikedSongs from './pages/liked-songs';
+import Playlist from './pages/playlist';
 import Header from './components/header';
 import Container from './components/container';
 import SongForm from './pages/song-form';
@@ -47,13 +48,15 @@ export default class App extends React.Component {
       return <EndOfRecommendations></EndOfRecommendations>;
     } else if (route.path === 'liked-songs') {
       return <LikedSongs likes={this.state.likes}></LikedSongs>;
+    } else if (route.path === 'songify-playlist') {
+      return <Playlist likes={this.state.likes}></Playlist>;
     }
   }
 
   render() {
     return (
     <>
-        {this.state.user !== null &&
+        {this.state.user &&
       <>
         <Header>
         </Header>

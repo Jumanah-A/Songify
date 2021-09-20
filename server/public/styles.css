@@ -78,6 +78,10 @@ input::placeholder {
   margin: 3rem;
 }
 
+.margin-2 {
+  margin: 2rem;
+}
+
 .padding-1 {
   padding: 1rem;
 }

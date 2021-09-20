@@ -20,8 +20,8 @@ export default class Recommendations extends React.Component {
           .then(recommendationArray => {
             this.setState({ recommendations: recommendationArray });
           });
-
-      });
+      })
+      .catch(err => console.error(err));
 
   }
 

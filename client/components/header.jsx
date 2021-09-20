@@ -7,8 +7,11 @@ export default class Header extends React.Component {
   }
 
   handleClick() {
-    // eslint-disable-next-line
-    console.log('logout button is clicked');
+    fetch('/auth/logout')
+      .then(res => {
+        window.location.href = '/auth/spotify';
+      })
+      .catch(err => console.error(err));
   }
 
   render() {
