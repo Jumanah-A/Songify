@@ -77,7 +77,7 @@ app.get(
   }
 );
 
-app.get('/spotify/search/:track/:artist', ensureAuthenticated, (req, res) => {
+app.get('/spotify/search/:track/:artist', (req, res) => {
   const { track, artist } = req.params;
   let songId = {};
   const spotify = new Spotify({
