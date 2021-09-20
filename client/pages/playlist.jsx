@@ -3,8 +3,17 @@ import { Row, Container, Col } from 'react-bootstrap';
 import { RiSpotifyFill } from 'react-icons/ri';
 
 export default class Playlist extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(event) {
+
+  }
+
   render() {
-    const songItems = this.props.likes.map(song =>
+    const songItems = this.props.playlistSongs.map(song =>
       <div key={song.songId}>
         <Row key={song.songId} className='padding-05'>
           <Col ><img className='listImage' src={song.imageUrl[2].url}></img></Col>
@@ -12,7 +21,7 @@ export default class Playlist extends React.Component {
           <Col className='align-center'><p>{song.artists[0].name}</p></Col>
           <Col >
             <div className='flex-start'>
-              <button><RiSpotifyFill/></button>
+              <button onClick={this.handleClick} className='no-style'><h3 className='padding-2'><RiSpotifyFill className='green' /></h3></button>
             </div>
           </Col>
         </Row>

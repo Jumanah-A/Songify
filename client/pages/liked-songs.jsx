@@ -8,7 +8,8 @@ export default class LikedSongs extends React.Component {
 
     this.addTracks = this.addTracks.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.state = { playlistId: null, currentAdd: [], currentLikes: [...this.props.likes], likesAdded: [...this.props.likes] };
+    this.handlePlaylistSongs = this.handlePlaylistSongs.bind(this);
+    this.state = { playlistId: null, currentAdd: [], currentLikes: [...this.props.likes], likesAdded: [] };
   }
 
   componentDidMount() {
@@ -25,13 +26,19 @@ export default class LikedSongs extends React.Component {
 
   }
 
-  addTracks(trackUri, trackId, index) {
+  addTracks(trackUri, trackId, index, song) {
     const current = this.state.currentLikes;
     current.splice(index, 1);
     const temp = this.state.currentAdd;
     temp.push(trackUri);
-    this.setState({ currentLikes: current, currentAdd: temp });
+    const added = this.state.likesAdded;
+    added.push(song);
+    this.setState({ currentLikes: current, currentAdd: temp, likesAdded: added });
 
+  }
+
+  handlePlaylistSongs() {
+    this.props.handlePlaylistSongs(this.state.likesAdded);
   }
 
   handleClick() {
@@ -41,6 +48,7 @@ export default class LikedSongs extends React.Component {
     fetch(`/spotify/addTracks/${this.state.playlistId}/${this.state.currentAdd}`, req)
       .then(res => res.json())
       .catch(err => console.error(err));
+    this.handlePlaylistSongs();
     window.location.hash = '#songify-playlist';
   }
 
@@ -53,7 +61,7 @@ export default class LikedSongs extends React.Component {
           <Col className='align-center'><p>{song.artists[0].name}</p></Col>
         <Col >
           <div className='flex-start'>
-              <button onClick={() => { this.addTracks(song.trackUri, song.songId, this.state.currentLikes.indexOf(song)); }} className='no-style'><h3><RiPlayListAddLine className='green' /></h3></button>
+              <button onClick={() => { this.addTracks(song.trackUri, song.songId, this.state.currentLikes.indexOf(song), song); }} className='no-style'><h3><RiPlayListAddLine className='green' /></h3></button>
           </div>
         </Col>
       </Row>
