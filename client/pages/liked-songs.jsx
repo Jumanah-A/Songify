@@ -9,7 +9,8 @@ export default class LikedSongs extends React.Component {
     this.addTracks = this.addTracks.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handlePlaylistSongs = this.handlePlaylistSongs.bind(this);
-    this.state = { playlistId: null, currentAdd: [], currentLikes: [...this.props.likes], likesAdded: [] };
+    this.playlistRedirect = this.playlistRedirect.bind(this);
+    this.state = { playlistId: null, currentAdd: [], currentLikes: [...this.props.likes], likesAdded: [], playlistRedirect: null };
   }
 
   componentDidMount() {
@@ -20,7 +21,8 @@ export default class LikedSongs extends React.Component {
     fetch('/spotify/create-playlist', req)
       .then(res => res.json())
       .then(data => {
-        this.setState({ playlistId: data.body.id });
+        this.setState({ playlistId: data.body.id, playlistRedirect: data.body.external_urls.spotify });
+
       })
       .catch(err => console.error(err));
 
@@ -41,6 +43,10 @@ export default class LikedSongs extends React.Component {
     this.props.handlePlaylistSongs(this.state.likesAdded);
   }
 
+  playlistRedirect() {
+    this.props.playlistRedirect(this.state.playlistRedirect);
+  }
+
   handleClick() {
     const req = {
       method: 'POST'
@@ -49,6 +55,7 @@ export default class LikedSongs extends React.Component {
       .then(res => res.json())
       .catch(err => console.error(err));
     this.handlePlaylistSongs();
+    this.playlistRedirect();
     window.location.hash = '#songify-playlist';
   }
 

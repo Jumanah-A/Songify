@@ -6,10 +6,15 @@ export default class Playlist extends React.Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
+    this.redirectPlaylist = this.redirectPlaylist.bind(this);
   }
 
-  handleClick(event) {
+  handleClick(redirectUrl) {
+    window.open(redirectUrl);
+  }
 
+  redirectPlaylist() {
+    window.open(this.props.playlistRedirect);
   }
 
   render() {
@@ -21,7 +26,7 @@ export default class Playlist extends React.Component {
           <Col className='align-center'><p>{song.artists[0].name}</p></Col>
           <Col >
             <div className='flex-start'>
-              <button onClick={this.handleClick} className='no-style'><h3 className='padding-2'><RiSpotifyFill className='green' /></h3></button>
+              <button onClick={() => { this.handleClick(song.spotifyRedirectUrl); }} className='no-style'><h3 className='padding-2'><RiSpotifyFill className='green' /></h3></button>
             </div>
           </Col>
         </Row>
@@ -43,6 +48,7 @@ export default class Playlist extends React.Component {
             {songItems}
           </div>
           <Row className='flex-center'>
+            <button onClick={this.redirectPlaylist} className='green-button padding-1 margin-2'><h4><RiSpotifyFill className='spotify-icon' />View Playlist on Spotify</h4></button>
           </Row>
         </Container>
       </>
