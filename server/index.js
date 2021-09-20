@@ -160,9 +160,6 @@ app.listen(process.env.PORT, function () {
   console.log('App is listening on port ' + process.env.PORT);
 });
 
-// UNCOMMENT LATER ON
-// use as authentication middleware for making request to the user data
-
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
@@ -175,6 +172,5 @@ app.get('/auth/logout', function (req, res) {
   console.log('user is logged out');
   req.logout();
   res.clearCookie('userName');
-  // res.clearCookie('connect.sid');
   res.redirect('/auth/spotify');
 });
