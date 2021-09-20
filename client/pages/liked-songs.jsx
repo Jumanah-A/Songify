@@ -8,7 +8,7 @@ export default class LikedSongs extends React.Component {
 
     this.addTracks = this.addTracks.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.state = { playlistId: null, currentAdd: [], currentLikes: this.props.likes };
+    this.state = { playlistId: null, currentAdd: [], currentLikes: [...this.props.likes], likesAdded: [...this.props.likes] };
   }
 
   componentDidMount() {

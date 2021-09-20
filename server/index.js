@@ -134,25 +134,18 @@ app.get('/spotify/recs/:artistId/:trackId/:genre', (req, res) => {
 app.post('/spotify/create-playlist', ensureAuthenticated, (req, res, next) => {
   spotifyApi.createPlaylist('Songify', { description: 'Your Songify recommendation playlist', public: false })
     .then(function (data) {
-      // eslint-disable-next-line
-      console.log('Created playlist!');
       res.json(data);
-    }, function (err) {
-      // eslint-disable-next-line
-      console.log('Something went wrong!', err);
-    });
+    })
+    .catch(err => next(err));
 
 });
 app.post('/spotify/addTracks/:playlistId/:trackId', ensureAuthenticated, (req, res, next) => {
   const { playlistId, trackId } = req.params;
   spotifyApi.addTracksToPlaylist(playlistId, trackId.split(','))
     .then(function (data) {
-      // eslint-disable-next-line
-      console.log('Added tracks to playlist!');
-    }, function (err) {
-      // eslint-disable-next-line
-      console.log('Something went wrong!', err);
-    });
+      res.json(data);
+    })
+    .catch(err => next(err));
 });
 
 app.listen(process.env.PORT, function () {
@@ -168,8 +161,6 @@ function ensureAuthenticated(req, res, next) {
 }
 
 app.get('/auth/logout', function (req, res) {
-  // eslint-disable-next-line
-  console.log('user is logged out');
   req.logout();
   res.clearCookie('userName');
   res.redirect('/auth/spotify');
