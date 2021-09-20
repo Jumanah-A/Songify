@@ -14,8 +14,9 @@ import parseRoute from './lib/parse-route';
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { user: null, isAuthenticated: false, route: parseRoute(window.location.hash), likes: [], playlistSongs: [] };
+    this.state = { user: null, isAuthenticated: false, route: parseRoute(window.location.hash), likes: [], playlistSongs: [], redirectUri: null };
     this.handleLikes = this.handleLikes.bind(this);
+    this.playlistRedirect = this.playlistRedirect.bind(this);
     this.handlePlaylistSongs = this.handlePlaylistSongs.bind(this);
 
   }
@@ -41,6 +42,10 @@ export default class App extends React.Component {
     this.setState({ playlistSongs: songs });
   }
 
+  playlistRedirect(redirectUri) {
+    this.setState({ redirectUri: redirectUri });
+  }
+
   renderPage(user) {
     const { route } = this.state;
     if (route.path === 'song-form') {
@@ -52,9 +57,9 @@ export default class App extends React.Component {
     } else if (route.path === 'endOfRecommendations') {
       return <EndOfRecommendations></EndOfRecommendations>;
     } else if (route.path === 'liked-songs') {
-      return <LikedSongs handlePlaylistSongs={this.handlePlaylistSongs} likes={this.state.likes}></LikedSongs>;
+      return <LikedSongs playlistRedirect={this.playlistRedirect} handlePlaylistSongs={this.handlePlaylistSongs} likes={this.state.likes}></LikedSongs>;
     } else if (route.path === 'songify-playlist') {
-      return <Playlist likes={this.state.likes} playlistSongs={this.state.playlistSongs}></Playlist>;
+      return <Playlist playlistRedirect={this.state.redirectUri} playlistSongs={this.state.playlistSongs}></Playlist>;
     }
   }
 
