@@ -77,7 +77,7 @@ app.get(
   }
 );
 
-app.get('/spotify/search/:track/:artist', (req, res) => {
+app.get('/spotify/search/:track/:artist', ensureAuthenticated, (req, res) => {
   const { track, artist } = req.params;
   let songId = {};
   const spotify = new Spotify({
@@ -131,7 +131,7 @@ app.get('/spotify/recs/:artistId/:trackId/:genre', (req, res) => {
     });
 });
 
-app.post('/spotify/create-playlist', (req, res, next) => {
+app.post('/spotify/create-playlist', ensureAuthenticated, (req, res, next) => {
   spotifyApi.createPlaylist('Songify', { description: 'Your Songify recommendation playlist', public: false })
     .then(function (data) {
       // eslint-disable-next-line
@@ -143,7 +143,7 @@ app.post('/spotify/create-playlist', (req, res, next) => {
     });
 
 });
-app.post('/spotify/addTracks/:playlistId/:trackId', (req, res, next) => {
+app.post('/spotify/addTracks/:playlistId/:trackId', ensureAuthenticated, (req, res, next) => {
   const { playlistId, trackId } = req.params;
   spotifyApi.addTracksToPlaylist(playlistId, trackId.split(','))
     .then(function (data) {
@@ -163,19 +163,18 @@ app.listen(process.env.PORT, function () {
 // UNCOMMENT LATER ON
 // use as authentication middleware for making request to the user data
 
-// function ensureAuthenticated(req, res, next) {
-//   if (req.isAuthenticated()) {
-//     return next();
-//   }
-//   res.redirect('/auth/spotify');
-// }
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/auth/spotify');
+}
 
 app.get('/auth/logout', function (req, res) {
   // eslint-disable-next-line
   console.log('user is logged out');
   req.logout();
   res.clearCookie('userName');
-  res.clearCookie('connect.sid');
+  // res.clearCookie('connect.sid');
   res.redirect('/auth/spotify');
 });
-// test comment

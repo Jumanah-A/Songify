@@ -20,7 +20,8 @@ export default class LikedSongs extends React.Component {
       .then(res => res.json())
       .then(data => {
         this.setState({ playlistId: data.body.id });
-      });
+      })
+      .catch(err => console.error(err));
 
   }
 
@@ -29,7 +30,6 @@ export default class LikedSongs extends React.Component {
     current.splice(index, 1);
     const temp = this.state.currentAdd;
     temp.push(trackUri);
-    // console.log('temp is', temp)
     this.setState({ currentLikes: current, currentAdd: temp });
 
   }
@@ -40,10 +40,8 @@ export default class LikedSongs extends React.Component {
     };
     fetch(`/spotify/addTracks/${this.state.playlistId}/${this.state.currentAdd}`, req)
       .then(res => res.json())
-      .then(data => {
-        // eslint-disable-next-line
-        console.log(data);
-      });
+      .catch(err => console.error(err));
+    window.location.hash = '#songify-playlist';
   }
 
   render() {
