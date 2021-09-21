@@ -102,7 +102,6 @@ app.get('/spotify/search/:track/:artist', (req, res) => {
 
 app.get('/spotify/recs/:artistId/:trackId/:genre', (req, res) => {
   const { artistId, trackId, genre } = req.params;
-
   const spotify = new Spotify({
     id: CLIENT_ID,
     secret: CLIENT_SECRET

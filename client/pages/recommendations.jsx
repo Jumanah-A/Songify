@@ -12,6 +12,9 @@ export default class Recommendations extends React.Component {
   }
 
   componentDidMount() {
+    if (this.props.params.get('genre') === '') {
+      window.location.hash = '#song-form';
+    }
     fetch(`/spotify/search/${this.props.params.get('song')}/${this.props.params.get('artist')}`)
       .then(res => res.json())
       .then(data => {
