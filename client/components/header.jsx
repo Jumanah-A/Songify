@@ -9,7 +9,8 @@ export default class Header extends React.Component {
   handleClick() {
     fetch('/auth/logout')
       .then(res => {
-        window.location.href = '/auth/spotify';
+        document.cookie = 'userName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        window.location.href = '/';
       })
       .catch(err => console.error(err));
   }

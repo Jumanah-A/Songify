@@ -162,6 +162,5 @@ function ensureAuthenticated(req, res, next) {
 
 app.get('/auth/logout', function (req, res) {
   req.logout();
-  res.clearCookie('userName');
-  res.redirect('/auth/spotify');
+  res.clearCookie('connect.sid', { path: '/' }).status(200).send('Ok.');
 });
