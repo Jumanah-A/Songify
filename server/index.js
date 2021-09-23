@@ -100,14 +100,14 @@ app.get('/spotify/search/:track/:artist', (req, res) => {
     });
 });
 
-app.get('/spotify/recs/:artistId/:trackId/:genre', (req, res) => {
-  const { artistId, trackId, genre } = req.params;
+app.get('/spotify/recs/:artistId/:trackId/:genre/:noOfRecommendations', (req, res) => {
+  const { artistId, trackId, genre, noOfRecommendations } = req.params;
   const spotify = new Spotify({
     id: CLIENT_ID,
     secret: CLIENT_SECRET
   });
   spotify
-    .request(`https://api.spotify.com/v1/recommendations?market=US&seed_artists=${artistId}&seed_genres=${genre}&seed_tracks=${trackId}`)
+    .request(`https://api.spotify.com/v1/recommendations?market=US&seed_artists=${artistId}&seed_genres=${genre}&seed_tracks=${trackId}&limit=${noOfRecommendations}`)
     .then(function (data) {
       const extractInfo = data.tracks.map(x =>
         (
