@@ -90,7 +90,7 @@ export default class LikedSongs extends React.Component {
             {songItems}
           </div>
           <Row className='flex-center'>
-            <button onClick={this.handleClick} className='green-button padding-1 margin-2'>View Songify Playlist!</button>
+            <button onClick={this.handleClick} className='green-button padding-1 margin-2'><h4>View Songify Playlist!</h4></button>
           </Row>
         </Container>
       </>

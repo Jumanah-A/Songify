@@ -10,7 +10,7 @@ export default function Welcome(props) {
         </Row>
         <Row>
           <div className='flex-center'>
-            <a className='green-button margin-3 padding-1'href='#song-form'><h6> <i className="bi bi-music-note-beamed white"></i>  Get song recommendations! </h6></a>
+            <a className='green-button margin-2 padding-1'href='#song-form'><h6> <i className="bi bi-music-note-beamed white"></i>  Get song recommendations! </h6></a>
           </div>
         </Row>
       </Container>
