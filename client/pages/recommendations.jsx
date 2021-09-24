@@ -59,6 +59,13 @@ export default class Recommendations extends React.Component {
           {this.state.recommendations.length !== 0 &&
           <SongInfo changeSong={this.handlechangeSong} previewUrl={this.state.recommendations[this.state.currentIndex].previewUrl} recommendations={this.state.recommendations[this.state.currentIndex]}></SongInfo>
           }
+          {this.state.recommendations.length === 0 &&
+          <>
+            <h1 className='songify-header'>Loading your recommendations!</h1>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" />
+            </>
+          }
+
         </div>
 
         </>
