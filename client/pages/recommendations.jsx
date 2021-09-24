@@ -24,7 +24,10 @@ export default class Recommendations extends React.Component {
             this.setState({ recommendations: recommendationArray });
           });
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        window.location.hash = '#error';
+      });
 
   }
 
@@ -53,29 +56,26 @@ export default class Recommendations extends React.Component {
 
   render() {
     return (
-        <>
+      <>
         <div className='padding-0-1'>
           <h1 className='songify-header'>Recommendations</h1>
           {this.state.recommendations.length !== 0 &&
-          <SongInfo changeSong={this.handlechangeSong} previewUrl={this.state.recommendations[this.state.currentIndex].previewUrl} recommendations={this.state.recommendations[this.state.currentIndex]}></SongInfo>
+            <SongInfo changeSong={this.handlechangeSong} previewUrl={this.state.recommendations[this.state.currentIndex].previewUrl} recommendations={this.state.recommendations[this.state.currentIndex]}></SongInfo>
           }
           {this.state.recommendations.length === 0 &&
             <>
-            <div className='flex-column'>
-              <div className='flex-center'>
-                <h1 className='label'>Loading your recommendations!</h1>
+              <div className='flex-column'>
+                <div className='flex-center'>
+                  <h1 className='label'>Loading your recommendations!</h1>
+                </div>
+                <div className='flex-center'>
+                  <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+                </div>
               </div>
-              <div className='flex-center'>
-                <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
-              </div>
-            </div>
             </>
           }
-
         </div>
-
-        </>
+      </>
     );
-
   }
 }

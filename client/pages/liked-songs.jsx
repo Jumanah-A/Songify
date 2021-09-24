@@ -24,7 +24,10 @@ export default class LikedSongs extends React.Component {
         this.setState({ playlistId: data.body.id, playlistRedirect: data.body.external_urls.spotify });
 
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        window.location.hash = '#error';
+      });
 
   }
 
@@ -53,7 +56,10 @@ export default class LikedSongs extends React.Component {
     };
     fetch(`/spotify/addTracks/${this.state.playlistId}/${this.state.currentAdd}`, req)
       .then(res => res.json())
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        window.location.hash = '#error';
+      });
     this.handlePlaylistSongs();
     this.playlistRedirect();
     window.location.hash = '#songify-playlist';
