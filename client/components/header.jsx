@@ -4,6 +4,7 @@ export default class Header extends React.Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
+    this.handleHomepage = this.handleHomepage.bind(this);
   }
 
   handleClick() {
@@ -15,12 +16,14 @@ export default class Header extends React.Component {
       .catch(err => console.error(err));
   }
 
+  handleHomepage() {
+    window.location.href = '/';
+  }
+
   render() {
     return (
       <header>
-        <h1 className='songify-header'>
-          Songify
-        </h1>
+        <button onClick={this.handleHomepage} className="no-style"><h1 className='songify-header'>Songify</h1></button>
         <button onClick={this.handleClick} className="no-style">Logout  <i className="bi bi-box-arrow-right white icon"></i></button>
       </header>
     );
