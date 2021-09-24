@@ -18,7 +18,7 @@ export default class Recommendations extends React.Component {
     fetch(`/spotify/search/${this.props.params.get('song')}/${this.props.params.get('artist')}`)
       .then(res => res.json())
       .then(data => {
-        fetch(`/spotify/recs/${data.artistId}/${data.SongId}/:${this.props.params.get('genre')}`)
+        fetch(`/spotify/recs/${data.artistId}/${data.SongId}/${this.props.params.get('genre')}/${this.props.params.get('noOfRecommendations')}`)
           .then(res => res.json())
           .then(recommendationArray => {
             this.setState({ recommendations: recommendationArray });
@@ -39,7 +39,7 @@ export default class Recommendations extends React.Component {
     if (song !== null) {
       likedSongs.push(song);
     }
-    if (currentIndex > 19) {
+    if (currentIndex > this.state.recommendations.length - 1) {
       this.handleLikes();
       this.endOfRecommendations();
     } else {

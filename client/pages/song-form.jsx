@@ -134,7 +134,7 @@ const genres = [
 export default class SongForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { song: '', artist: '', genre: '' };
+    this.state = { song: '', artist: '', genre: '', noOfRecommendations: 10 };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -219,6 +219,10 @@ export default class SongForm extends React.Component {
                       placeholder="Select genre Ex: rock"
                       required
                     />
+                  </label>
+                  <label htmlFor="noOfRecommendations" className="labels">
+                    <h5>Number of Recommendations:</h5>
+                    <input name="noOfRecommendations" type="number" onChange={this.handleChange} step="1" min="1" max="50" placeholder="Enter the number (1-50) of recommendations you would like to see. " required />
                   </label>
                     <div className="flex-center margin-3">
                     <label htmlFor="submit">
