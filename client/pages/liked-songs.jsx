@@ -10,7 +10,8 @@ export default class LikedSongs extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.handlePlaylistSongs = this.handlePlaylistSongs.bind(this);
     this.playlistRedirect = this.playlistRedirect.bind(this);
-    this.state = { playlistId: null, currentAdd: [], currentLikes: [...this.props.likes], likesAdded: [], playlistRedirect: null };
+    this.handleError = this.handleError.bind(this);
+    this.state = { playlistId: null, currentAdd: [], currentLikes: [...this.props.likes], likesAdded: [], playlistRedirect: null, error: false };
   }
 
   componentDidMount() {
@@ -25,8 +26,8 @@ export default class LikedSongs extends React.Component {
 
       })
       .catch(err => {
+        this.setState({ error: true });
         console.error(err);
-        window.location.hash = '#error';
       });
 
   }
@@ -58,11 +59,21 @@ export default class LikedSongs extends React.Component {
       .then(res => res.json())
       .catch(err => {
         console.error(err);
-        window.location.hash = '#error';
+        this.setState({ error: true });
       });
     this.handlePlaylistSongs();
     this.playlistRedirect();
     window.location.hash = '#songify-playlist';
+  }
+
+  handleError() {
+    this.setState({ error: false });
+    fetch('/auth/logout')
+      .then(res => {
+        document.cookie = 'userName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        window.location.href = '/';
+      })
+      .catch(err => console.error(err));
   }
 
   render() {
@@ -82,6 +93,8 @@ export default class LikedSongs extends React.Component {
     );
     return (
       <>
+      { !this.state.error &&
+      <>
         <div className='padding-0-1'>
           <h1 className='songify-header'>Liked Recommendations</h1>
         </div>
@@ -99,6 +112,20 @@ export default class LikedSongs extends React.Component {
             <button onClick={this.handleClick} className='green-button padding-1 margin-2'><h4>View Songify Playlist!</h4></button>
           </Row>
         </Container>
+      </>
+      }
+      { this.state.error &&
+      <>
+        <div className='flex-column'>
+          <div className='flex-center'>
+            <h1 className='label'>Sorry an error occurred while processing your request</h1>
+          </div>
+          <div className='flex-center'>
+            <button className='green-button margin-2 padding-1' onClick={this.handleError} ><h6> Try Again </h6></button>
+          </div>
+        </div>
+      </>
+      }
       </>
     );
   }

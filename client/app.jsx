@@ -8,7 +8,6 @@ import Playlist from './pages/playlist';
 import Header from './components/header';
 import Container from './components/container';
 import SongForm from './pages/song-form';
-import ErrorMessage from './components/error';
 import cookie from 'cookie';
 import parseRoute from './lib/parse-route';
 
@@ -61,8 +60,6 @@ export default class App extends React.Component {
       return <LikedSongs playlistRedirect={this.playlistRedirect} handlePlaylistSongs={this.handlePlaylistSongs} likes={this.state.likes}></LikedSongs>;
     } else if (route.path === 'songify-playlist') {
       return <Playlist playlistRedirect={this.state.redirectUri} playlistSongs={this.state.playlistSongs}></Playlist>;
-    } else if (route.path === 'error') {
-      return <ErrorMessage></ErrorMessage>;
     }
   }
 
