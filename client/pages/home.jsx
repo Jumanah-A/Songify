@@ -12,7 +12,7 @@ export default function Home(props) {
     <div className='center'>
       <Container>
         <Row className='padding-1'>
-          <h1>Welcome to <span className='songify-header'>Songify</span></h1>
+          <h1>Welcome to <span className='green'>Songify</span></h1>
         </Row>
         <Row className='padding-1'>
           <h2>Get a fresh set of recommendations based on your favorite song, artist and genre.</h2>
@@ -22,7 +22,7 @@ export default function Home(props) {
         </Row>
         <Row className='padding-1'>
           <div className='flex-end padding-1'>
-            <button onClick={handleClick} className='green-button padding-1'>  <h1><RiSpotifyFill className='spotify-icon' />Sign in to Spotify</h1><a href='/auth/spotify'></a></button>
+            <button onClick={handleClick} className='green-button'>  <h2><RiSpotifyFill className='spotify-icon' />Sign in to Spotify</h2><a href='/auth/spotify'></a></button>
           </div>
         </Row>
       </Container>

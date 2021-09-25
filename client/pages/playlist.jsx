@@ -5,8 +5,10 @@ import { RiSpotifyFill } from 'react-icons/ri';
 export default class Playlist extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { error: false };
     this.handleClick = this.handleClick.bind(this);
     this.redirectPlaylist = this.redirectPlaylist.bind(this);
+    this.handleError = this.handleError.bind(this);
   }
 
   handleClick(redirectUrl) {
@@ -14,7 +16,21 @@ export default class Playlist extends React.Component {
   }
 
   redirectPlaylist() {
-    window.open(this.props.playlistRedirect);
+    if (this.props.playlistRedirect !== null) {
+      window.open(this.props.playlistRedirect);
+    } else {
+      this.setState({ error: true });
+    }
+  }
+
+  handleError() {
+    this.setState({ error: false });
+    fetch('/auth/logout')
+      .then(res => {
+        document.cookie = 'userName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        window.location.href = '/';
+      })
+      .catch(err => console.error(err));
   }
 
   render() {
@@ -34,6 +50,8 @@ export default class Playlist extends React.Component {
     );
     return (
       <>
+      {!this.state.error &&
+      <>
         <div className='padding-0-1'>
           <h1 className='songify-header'>Songify Playlist</h1>
         </div>
@@ -51,6 +69,20 @@ export default class Playlist extends React.Component {
             <button onClick={this.redirectPlaylist} className='green-button padding-1 margin-2'><h4><RiSpotifyFill className='spotify-icon' />View Playlist on Spotify</h4></button>
           </Row>
         </Container>
+        </>
+        }
+        {this.state.error &&
+        <>
+          <div className='flex-column'>
+            <div className='flex-center'>
+              <h1 className='label'>Sorry an error occurred while processing your request</h1>
+            </div>
+            <div className='flex-center'>
+              <button className='green-button margin-2 padding-1' onClick={this.handleError} ><h6> Try Again </h6></button>
+            </div>
+          </div>
+        </>
+        }
       </>
     );
   }
