@@ -61,10 +61,6 @@ input::placeholder {
   width: auto;
 }
 
-.yes {
-  padding: 1rem 2rem;
-}
-
 .no {
   padding: 0.5rem 1rem;
   background-color: #822424;
@@ -92,10 +88,6 @@ input::placeholder {
 
 .padding-2 {
   padding: 0 2rem;
-}
-
-.padding-3 {
-  padding: 0 3rem;
 }
 
 .text-center {

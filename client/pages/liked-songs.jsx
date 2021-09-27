@@ -80,7 +80,7 @@ export default class LikedSongs extends React.Component {
     const songItems = this.state.currentLikes.map(song =>
       <div key={song.songId}>
       <Row key={song.songId} className='padding-05'>
-          <Col ><img className='listImage' src={song.imageUrl[2].url}></img></Col>
+          <Col ><img src={song.imageUrl[2].url}></img></Col>
           <Col xs={3} className='align-center'><p>{song.songName}</p></Col>
           <Col className='align-center'><p>{song.artists[0].name}</p></Col>
         <Col >
