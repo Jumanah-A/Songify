@@ -35,6 +35,8 @@ Try the application live at https://songify-recommendations.herokuapp.com/
 
 ## Preview
 
+Note: As Songify is using Spotify's API in development mode, users must be registered to use the Songify web application, if you would like to use Songify, please send me an email with your full name and Spotify Account (email address) at:jumanahh@outlook.com to be registered and use Songify.
+
 Sign in to Spotify account/Authorize Songify:
 ![login:auth](https://user-images.githubusercontent.com/52221756/134995821-889800cf-d9aa-4f76-813a-57667cc2732c.gif)
 
