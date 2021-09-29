@@ -79,7 +79,7 @@ export default class Recommendations extends React.Component {
         {!this.state.error &&
           <>
             <div className='padding-0-1'>
-              <h1 className='songify-header'>Recommendations</h1>
+              <h2 className='songify-header'>Recommendations</h2>
               {this.state.recommendations.length !== 0 &&
                 <SongInfo changeSong={this.handlechangeSong} previewUrl={this.state.recommendations[this.state.currentIndex].previewUrl} recommendations={this.state.recommendations[this.state.currentIndex]}></SongInfo>
               }
