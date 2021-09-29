@@ -70,7 +70,7 @@ app.get(
 
 app.get(
   '/auth/spotify/callback',
-  passport.authenticate('spotify', { failureRedirect: `http://localhost:${process.env.DEV_SERVER_PORT}` }),
+  passport.authenticate('spotify', { failureRedirect: '/' }),
   function (req, res) {
     res.cookie('userName', req.session.passport.user);
     res.redirect('/');
